@@ -1,53 +1,58 @@
-#include <cstdio>
-#include <vector>
+#include <iostream>
 #include <cstring>
+#include <list>
+
 using namespace std;
-vector<pair<int,int>> a[10001];
-bool c[10001];
-int n,m;
-int st, ed;
-bool go(int node, int limit) {
-    if (c[node]) {
-        return false;
-    }
-    c[node] = true;
-    if (node == ed) {
-        return true;
-    }
-    for (auto &p : a[node]) {
-        int next = p.first;
-        int cost = p.second;
-        if (cost >= limit) {
-            if (go(next, limit)) {
-                return true;
-            }
-        }
-    }
-    return false;
+
+list<pair<int,int>> snake;
+bool tb2[1001][1001];
+int turn = 0;//0 : 동 1 : 남 2 : 서 3 : 북 시계뱡향으로 증가 
+
+void go(int min){
+	if(turn == 0){
+		for(int i=0;i<min;++i){
+
+		}
+	}
 }
-int main() {
-    scanf("%d %d",&n,&m);
-    while (m--) {
-        int x,y,z;
-        scanf("%d %d %d",&x,&y,&z);
-        a[x].push_back(make_pair(y,z));
-        a[y].push_back(make_pair(x,z));
-    }
-    scanf("%d %d",&st,&ed);
-    int left, right;
-    left = 1;
-    right = 1000000000;
-    int ans = 0;
-    while (left <= right) {
-        int mid = left + (right-left)/2;
-        memset(c,false,sizeof(c));
-        if (go(st, mid)) {
-            ans = mid;
-            left = mid+1;
-        } else {
-            right = mid-1;
-        }
-    }
-    printf("%d\n",ans);
-    return 0;
+
+int main(void){
+	int size;
+	cin >> size;
+	
+	int n1,n2;
+	cin >> n1;
+	for(int i=0;i<n1;++i){ // apple's location
+		memset(tb2,false,sizeof(tb2));
+		int a,b;
+		cin >> a >> b;
+		tb2[a][b] = true;
+	}
+
+	cin >> n2;
+	snake.push_back(0).first;
+	for(int i=0;i<n2;++i){//snake's turn
+		int a;
+		char b;
+		cin >> a >> b;
+		
+		go(a);
+
+		if(b == 'D'){ //
+			if(turn==3){
+				turn = 0;
+			}
+			else{
+				turn++;
+			}
+		}
+		else{
+			if(turn == 0){
+				turn = 3;
+			}
+			else{
+				turn--;
+			}
+		}
+	}
 }
