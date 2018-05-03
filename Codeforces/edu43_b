@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+typedef long long ll;
+ll c;
+ll x = 1, y = 1;
+
+
+int main(void) {
+	ll n, m;
+	cin >> n >> m >> c;
+	if (c < n) {
+		cout << 1 + c << ' ' << 1 << endl;
+		return 0;
+	}
+	if (c < n + m - 1) {
+		cout << n << ' ' << (c - (n - 1)) + 1 << endl;
+		return 0;
+	}
+	if (n*m - 1 == c) {
+		cout << 1 << ' ' << 2 << endl;
+		return 0;
+	}
+	c -= (m + n - 2);
+	ll temp = n - 1 - ((c-1) / (m - 1));
+	ll temp2; 
+	if (temp % 2 == 0) {
+		temp2 = 1 + (c-1) % (m - 1);
+	}
+	else {
+		temp2 =  m - 1 - (c-1) % (m - 1);
+	}
+	cout << temp << ' ' << temp2 + 1 << endl;
+
+	return 0;
+}
