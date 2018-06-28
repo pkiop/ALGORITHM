@@ -55,6 +55,9 @@ int solve(const vector<int>& a, const vector<int>& b) {
 		//i번 종목을 뒤에 붙인다면?
 		for (int i = 0; i < a.size(); ++i) {
 			int next = delta + a[i] - b[i];
+			//시간 차이의 절대값이 200이 넘는 정점은 만들 필요가 없다. 
+			//-180과 -210의 경우, -210이 0으로 가기 위해선 반드시 양의 간선을 지나야 한다. 
+			// 그 양의 간선을 먼저 계산하게 된다면(순서는 바뀌어도 관계 없으므로) 절대값 200이내에서 다 해결할 수 있다. 
 			if (abs(next) > 200) continue;
 			adj[vertex(delta)].push_back({ vertex(next),a[i] });
 		}
