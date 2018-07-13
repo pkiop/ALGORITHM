@@ -24,10 +24,12 @@ int main(void) {
 	for (int k = b; k <= a; ++k) {
 		for (int i = 0; i < a; ++i) {
 			for (int j = i + k - 1; j < a; ++j) {
-				ans = max(ans, double(arr[j] - arr[i] + num[i]) / double(k + 1));
+				ans = max(ans, double(arr[j] - arr[i] + num[i]) / double(j-i+1));
 			}
 		}
 	}
+	cout.fixed;
+	cout.precision(9);
 	cout << ans << endl;
 
 }
