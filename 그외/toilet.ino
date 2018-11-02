@@ -3,7 +3,7 @@
  
 int servoPin = 9;
 Servo servo; 
-int angle = 0; // servo position in degrees 
+int angle = 0; // servo position in degrees .
 SoftwareSerial btSerial(2,3);
 
 void setup()
