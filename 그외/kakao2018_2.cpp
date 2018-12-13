@@ -28,6 +28,5 @@ vector<int> solution(int N, vector<int> stages) {
 	for (int i = 0; i < N; ++i) {
 		answer.push_back(fail[i].second);
 	}
-
 	return answer;
 }
