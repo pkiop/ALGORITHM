@@ -11,10 +11,22 @@ int main(void) {
 #ifdef GO
 	freopen("input.txt", "r", stdin);
 #endif
-	double a, b;
-	cin >> a >> b;
-	double M = (b - a) / 400.0;
-	cout.precision(9);
-	cout << 1 / (1 + pow(10, M));
+	int n;
+	cin >> n; 
+	int answer = 1;
+	int bias = 1;
+
+	int cnt = 0;
+	n--;
+	while (n--) {
+		if (cnt == 4) {
+			cnt = 0;
+			bias *= -1;
+		}
+		cnt++;
+		answer = answer + bias;
+	};
+	cout << answer << endl;
+	
 	return 0;
 }
