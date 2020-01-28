@@ -299,13 +299,22 @@ bool dfs(int now_x, int now_y, int ten_in) {
 		int nx = now_x + dx[k];
 		int ny = now_y + dy[k];
 		
-		if()
-		else if (visited[nx][ny][0] == true) {
-			continue;
-		}
 		if (0 > nx || nx >= X || 0 > ny || ny >= Y) {
 			continue;
 		}
+		// ten in 다음 ten in
+		if (table[nx][ny] == '+') {
+			if (visited[nx][ny][1] == true && (k == 0 || k == 1)) {
+				continue;
+			}
+			if (visited[nx][ny][2] == true && (k == 2 || k == 3)) {
+				continue;
+			}
+		}
+		else if (visited[nx][ny][0] == true) {
+			continue;
+		}
+		
 		if (chk_move_ok(now_x, now_y, k, ten_in)) {
 			if (table[nx][ny] == '+') {
 				if (k == 0 || k == 1) {
@@ -331,17 +340,17 @@ void print_visited() {
 	}
 }
 
-void print_b_visited() {
+/*void print_b_visited() {
 	for (int y = 0; y < Y; ++y) {
 		for (int x = 0; x < X; ++x) {
 			cout << b_visited[x][y] << ' ';
 		}
 		cout << endl;
 	}
-}
+}*/
 
 void init() {
-	for (int y = 0; y < Y; ++y) {
+	/*for (int y = 0; y < Y; ++y) {
 		for (int x = 0; x < X; ++x) {
 			if (table[x][y] == '+') {
 				visited[x][y] = 99;
@@ -353,15 +362,15 @@ void init() {
 				visited[x][y] = 1;
 			}
 		}
-	}
-	memset(b_visited, false, sizeof(b_visited));
+	}*/
+	memset(visited, false, sizeof(visited));
 }
 
 int find_use_block() {
 	int ret = 0;
 	for (int y = 0; y < Y; ++y) {
 		for (int x = 0; x < X; ++x) {
-			if (b_visited[x][y] == true) {
+			if (visited[x][y][0] == true) {
 				ret++;
 			}
 		}
