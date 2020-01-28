@@ -1,0 +1,422 @@
+/*
+	M에서 출발해서 Z로 가는 dfs -> 가능한지 확인
+	. 에 가능한 block 넣어보는 코드 
+		- 길 주위에 있는 .만
+		- 길 과 양쪽이 연결될 수 있는 길만
+*/
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cstring>
+
+using namespace std;
+
+int X, Y;
+
+int Moscow_x;
+int Moscow_y;
+int Zag_x;
+int Zag_y;
+
+char pipes[] = { '|', '-', '1', '2', '3', '4','+' };
+
+char table[26][26];
+
+
+
+bool up_check(int lo_x, int lo_y) {
+	char comp_char = table[lo_x][lo_y-1];
+	if (comp_char == '.') {
+		return false;
+	}
+	if (comp_char == '-' || comp_char == '2' || comp_char == '3') {
+		return false;
+	}
+	
+	return true;
+}
+
+bool down_check(int lo_x, int lo_y) {
+	char comp_char = table[lo_x][lo_y + 1];
+	if (comp_char == '.') {
+		return false;
+	}
+	if (comp_char == '-' || comp_char == '1' || comp_char == '4') {
+		return false;
+	}
+
+	return true;
+}
+
+bool left_check(int lo_x, int lo_y) {
+	char comp_char = table[lo_x - 1][lo_y];
+	if (comp_char == '.') {
+		return false;
+	}
+	if (comp_char == '|' || comp_char == '3' || comp_char == '4') {
+		return false;
+	}
+
+	return true;
+}
+
+bool right_check(int lo_x, int lo_y) {
+	char comp_char = table[lo_x + 1][lo_y];
+	if (comp_char == '.') {
+		return false;
+	}
+	if (comp_char == '|' || comp_char == '1' || comp_char == '2') {
+		return false;
+	}
+	return true;
+}
+
+bool chk_block_ok(int lo_x, int lo_y, char pipe) {
+	switch (pipe) {
+	case '|':
+		if (up_check(lo_x, lo_y) && down_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '-':
+		if (left_check(lo_x, lo_y) && right_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '1':
+		if (down_check(lo_x, lo_y) && right_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '2':
+		if (up_check(lo_x, lo_y) && right_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '3':
+		if (left_check(lo_x, lo_y) && up_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '4':
+		if (left_check(lo_x, lo_y) && down_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	case '+':
+		if (up_check(lo_x, lo_y) && down_check(lo_x, lo_y) && left_check(lo_x, lo_y) && right_check(lo_x, lo_y)) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+bool chk_move_ok(int lo_x, int lo_y, int dir, int ten_in) {
+	char comp_char = table[lo_x][lo_y];
+
+	if (dir == 0) {
+		if (comp_char == '|') {
+			if (down_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '-') {
+			//false;
+		}
+		if (comp_char == '+' && ten_in == 0) {
+			if (down_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 1) {
+			if (down_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 2) {
+			
+		}
+		if (comp_char == '1') {
+			if (down_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '2') {
+			
+		}
+		if (comp_char == '3') {
+			
+		}
+		if (comp_char == '4') {
+			if (down_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+	}
+
+	if (dir == 1) {
+		if (comp_char == '|') {
+			if (up_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '-') {
+			//false;
+		}
+		if (comp_char == '+' && ten_in == 0) {
+			if (up_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 1) {
+			if (up_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 2) {
+
+		}
+		if (comp_char == '1') {
+			
+		}
+		if (comp_char == '2') {
+			if (up_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '3') {
+			if (up_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '4') {
+			
+		}
+	}
+
+	if (dir == 2) {
+		if (comp_char == '|') {
+			
+		}
+		if (comp_char == '-') {
+			if (right_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 0) {
+			if (right_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 1) {
+			
+		}
+		if (comp_char == '+' && ten_in == 2) {
+			if (right_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '1') {
+			if (right_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '2') {
+			if (right_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '3') {
+			
+		}
+		if (comp_char == '4') {
+
+		}
+	}
+
+	if (dir == 3) {
+		if (comp_char == '|') {
+
+		}
+		if (comp_char == '-') {
+			if (left_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 0) {
+			if (left_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '+' && ten_in == 1) {
+
+		}
+		if (comp_char == '+' && ten_in == 2) {
+			if (left_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '1') {
+			
+		}
+		if (comp_char == '2') {
+			
+		}
+		if (comp_char == '3') {
+			if (left_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+		if (comp_char == '4') {
+			if (left_check(lo_x, lo_y)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+int visited[26][26][3];
+bool finished = false;
+bool dfs(int now_x, int now_y, int ten_in) {
+ 	if (now_x == Zag_x && now_y == Zag_y) {
+		finished = true;
+		return true;
+	}
+	if (table[now_x][now_y] == '+' && ten_in == 1) {
+		visited[now_x][now_y][1] = true;
+	}
+	if (table[now_x][now_y] == '+' && ten_in == 2) {
+		visited[now_x][now_y][2] = true;
+	}
+	visited[now_x][now_y][0] = true;
+
+	for (int k = 0; k < 4; ++k) { // 하 상 우 좌
+		int nx = now_x + dx[k];
+		int ny = now_y + dy[k];
+		
+		if()
+		else if (visited[nx][ny][0] == true) {
+			continue;
+		}
+		if (0 > nx || nx >= X || 0 > ny || ny >= Y) {
+			continue;
+		}
+		if (chk_move_ok(now_x, now_y, k, ten_in)) {
+			if (table[nx][ny] == '+') {
+				if (k == 0 || k == 1) {
+					dfs(nx, ny, 1);
+				}
+				else {
+					dfs(nx, ny, 2);
+				}
+			}
+			else {
+				dfs(nx, ny, 0);
+			}
+		}
+	}
+	return false;
+}
+void print_visited() {
+	for (int y = 0; y < Y; ++y) {
+		for (int x = 0; x < X; ++x) {
+			cout << visited[x][y] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+void print_b_visited() {
+	for (int y = 0; y < Y; ++y) {
+		for (int x = 0; x < X; ++x) {
+			cout << b_visited[x][y] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+void init() {
+	for (int y = 0; y < Y; ++y) {
+		for (int x = 0; x < X; ++x) {
+			if (table[x][y] == '+') {
+				visited[x][y] = 99;
+			}
+			else if (table[x][y] == '.') {
+				visited[x][y] = 0;
+			}
+			else {
+				visited[x][y] = 1;
+			}
+		}
+	}
+	memset(b_visited, false, sizeof(b_visited));
+}
+
+int find_use_block() {
+	int ret = 0;
+	for (int y = 0; y < Y; ++y) {
+		for (int x = 0; x < X; ++x) {
+			if (b_visited[x][y] == true) {
+				ret++;
+			}
+		}
+	}
+	return ret;
+}
+int use_block = 0;
+int main(void) {
+	
+	cin >> Y >> X;
+
+	for (int i = 0; i < Y; ++i) {
+		string s;
+		cin >> s;
+		for (int j = 0; j < X; ++j) {
+			table[j][i] = s[j];
+			if (s[j] == 'M') {
+				Moscow_x = j;
+				Moscow_y = i;
+				table[j][i] = '+';
+			}
+			if (s[j] == 'Z') {
+				Zag_x = j;
+				Zag_y = i;
+				table[j][i] = '+';
+			}
+			if (s[j] != '.') {
+				use_block++;
+			}
+		}
+	}
+
+	for (int now_y = 0; now_y < Y; ++now_y) {
+		for (int now_x = 0; now_x < X; ++now_x) {
+			if (table[now_x][now_y] != '.') {
+				continue;
+			}
+			for (int now_pipes_idx = 0; now_pipes_idx < 7; ++now_pipes_idx) {
+				if (chk_block_ok(now_x, now_y, pipes[now_pipes_idx])) {
+					table[now_x][now_y] = pipes[now_pipes_idx];
+					init();
+					dfs(Moscow_x, Moscow_y,0);
+					int now_use_block = find_use_block();
+					//cout << use_block << ' ' << now_use_block << endl;
+					//print_b_visited();
+					if(finished && use_block == now_use_block) {
+						cout << now_y + 1 << ' ' << now_x + 1 << ' ' << pipes[now_pipes_idx] << endl;
+						//print_visited();
+						return 0;
+					}
+					finished = false;
+					table[now_x][now_y] = '.';
+				}
+			}
+		}
+	}
+	
+}
