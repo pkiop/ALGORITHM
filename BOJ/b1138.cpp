@@ -40,6 +40,7 @@ void dfs(int depth) {
 		}
 	}
 }
+
 int main(void) {
 	cin >> n;
 	int temp;
