@@ -18,8 +18,7 @@ int solution(int bridge_length, int weight, vector<int> truck_weights) {
     int anscnt = truck_weights.size();
     while(1) {
         int qf = q.front();
-        cout << "qf : " << qf << endl;
-        cout << "q.size() : " << q.size() << endl;
+      
         q.pop();
         if(qf != 0) {
             anscnt--;
