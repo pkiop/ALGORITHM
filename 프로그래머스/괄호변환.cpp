@@ -5,7 +5,6 @@
 using namespace std;
 
 
-
 // 0 -> 균형잡히지도 않음
 // 1 -> 균형잡힌 괄호 문자열
 // 2 -> 완성
@@ -19,13 +18,14 @@ int isRight(string s) {
 	for (int i = 0; i < s.size(); ++i) {
 		if (s[i] == '(') {
 			leftCnt++;
-			st.push(1);
+            if(complete) {
+			    st.push(1);
+            }
 		}
 		else {
 			rightCnt++;
 			if (complete == true) {
 				if (st.empty()) {
-					//cout << "anotherfail" << endl;
 					complete = false;
 				}
 				else {
@@ -34,11 +34,13 @@ int isRight(string s) {
 			}
 		}
 	}
+    if(!st.empty()) {
+        complete = false;
+    }
 	if (leftCnt == rightCnt) {
 		balance = true;
 	}
-	//cout << "complete : " << complete << endl;
-	//cout << "balance : " << balance << endl;
+
 	if (complete) {
 		return 2;
 	}
@@ -76,59 +78,42 @@ string vSequence(string p) {
 	if (p == "") {
 		return "";
 	}
-	if (isRight(p) == 2) {
-		return p;
-	}
+	//if (isRight(p) == 2) {
+	//	return p;
+	//}
 	for (i = 2; i <= p.size(); i += 2) {
 		string u = p.substr(0, i);
 		string v = p.substr(i, p.size());
 
-		if (isRight(u) > 0) {
-			return uSequence(u, v);
+		if (isRight(u) == 2) {
+			return u + vSequence(v);
 		}
+        if (isRight(u) == 1) {
+            return uSequence(u, v);
+        }
 	}
+    cout << "do???" << endl;
 	return uSequence(p, "");
 }
 
 
 string solution(string p) {
-	// 1단계
-	if (p == "") {
-		return p;
-	}
 
-	if (isRight(p) == 2) {
-		return p;
-	}
+	// 1단계
+    
+
+	//if (isRight(p) == 2) {
+	//	return p;
+	//}
 	// 2단계
 	for (int i = 2; i <= p.size(); i+=2) {
 		string u = p.substr(0, i);
 		string v = p.substr(i, p.size());
 		
 		if (isRight(u) > 0) {
+            //cout << "i : " << i << "success " << endl;
 			return uSequence(u, v);
 		}
 	}
-}
-
-
-
-int main(void) {
-	freopen("input.txt", "r", stdin);
-	string s, s2;
-	while (1) {
-		cin >> s;
-		if (s[0] == 'o') {
-			break;
-		}
-		string answer = solution(s);
-		cin >> s2;
-		if (answer == s2) {
-			cout << "Success : " << answer << endl;
-		}
-		else {
-			cout << "fail : " << answer << " , " << s2 << endl;
-		}
-	}
-
+    
 }
