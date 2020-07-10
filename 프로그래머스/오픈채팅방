@@ -1,0 +1,106 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stack>
+#include <map>
+using namespace std;
+
+map<string, string> nicktable;
+vector<pair<string, bool> > sq; // false - out, true - in
+
+vector<string> solution(vector<string> recode) {
+	for (auto x : recode) {
+		string temp, ID = "", NICK = "";
+		if (x[0] == 'E') {
+			temp = x.substr(6);
+			int i;
+			for (i = 0; i < temp.size(); ++i) {
+				if (temp[i] == ' ') {
+					break;
+				}
+				ID += temp[i];
+			}
+			i++;
+			for (; i < temp.size(); ++i) {
+				NICK += temp[i];
+			}
+			nicktable[ID] = NICK;
+			sq.push_back({ ID, true});
+		}
+		if (x[0] == 'L') {
+			temp = x.substr(6);
+			int i;
+			for (i = 0; i < temp.size(); ++i) {
+				if (temp[i] == ' ') {
+					break;
+				}
+				ID += temp[i];
+			}
+			sq.push_back({ ID, false });
+		}
+		if (x[0] == 'C') {
+			temp = x.substr(7);
+			int i;
+			for (i = 0; i < temp.size(); ++i) {
+				if (temp[i] == ' ') {
+					break;
+				}
+				ID += temp[i];
+			}
+			i++;
+			for (; i < temp.size(); ++i) {
+				NICK += temp[i];
+			}
+			nicktable[ID] = NICK;
+		}
+	}
+	for (auto x : nicktable) {
+		cout << x.first << ' ' << x.second << endl;
+	}
+	vector<string> ret;
+	string forinput;
+	for (auto x : sq) {
+		forinput = "";
+		forinput += nicktable[x.first] + "님이 ";
+		if (x.second) {
+			forinput += "들어왔습니다.";
+		}
+		else {
+			forinput += "나갔습니다.";
+		}
+		ret.push_back(forinput);
+	}
+
+	return ret;
+}
+
+
+
+int main(void) {
+	freopen("input.txt", "r", stdin);
+	string s1, s2, s3;
+	
+	
+	vector<string> vs;
+	while (1) {
+		cin >> s1;
+		if (s1[0] == 'o') {
+			break;
+		}
+		if (s1[0] == 'L') {
+			cin >> s2;
+			s3 = "";
+		}
+		else {
+			cin >> s2 >> s3;
+		}
+		string temp = s1 + ' ' + s2 + ' ' + s3;
+		vs.push_back(temp);
+		
+	}
+	vector<string> answer = solution(vs);
+	for (auto x : answer) {
+		cout << x << endl;
+	}
+	return 0;
+}
