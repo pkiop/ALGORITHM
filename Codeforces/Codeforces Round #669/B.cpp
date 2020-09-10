@@ -53,7 +53,7 @@ void maxDiv(int num) {
 }
 
 int main(void) {
-  // freopen("input.txt", "r", stdin);
+  freopen("input.txt", "r", stdin);
   int t;
   cin >> t;
   while(t--) {
