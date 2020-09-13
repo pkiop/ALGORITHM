@@ -67,12 +67,8 @@ void checkTeamScore() {
 }
 
 bool visited[21];
-int recodeDepth = 0;
 void dfs(int depth, int nowidx, int maxDepth) {
   if(depth == maxDepth) {
-    if(recodeDepth != depth) {
-      recodeDepth = depth;
-    }
     checkTeamScore();
     return;
   }

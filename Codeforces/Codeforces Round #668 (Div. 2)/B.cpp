@@ -51,8 +51,8 @@ int main(void) {
           mP--;
         } else {
           temp[pP] = temp[mP] = 0;
-          mP++;
-          pP++;
+          mP--;
+          pP--;
         }
       }
     }
@@ -66,12 +66,6 @@ int main(void) {
     mP = pP = 0;
     ll ans = 0;
     while(1) {
-      // cout << mP << ' ' << pP << endl;
-      // cout << "middle" << endl;
-      // for (int i = 0; i < n; ++i) {
-      //   cout << temp[i] << ' ';
-      // } 
-      // cout << endl;
       if(mP >= n || pP >= n) {
         break;
       }
