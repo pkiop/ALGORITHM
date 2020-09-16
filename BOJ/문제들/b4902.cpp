@@ -6,14 +6,17 @@ using namespace std;
 
 int N;
 int table[401][801];
+int cSum[401][801];
 int ans;
 void input() {
   ans = -1001;
   for(int r=0;r<N;++r) {
+    cSum[r][0] = 0;
     for(int c=0;c<2*(r+1)-1;++c) {
       cin >> table[r][c];
-      memo[r][c][1] = table[r][c];
       ans = max(table[r][c], ans);
+      if(c != 0)
+        cSum[r][c] += cSum[r][c-1];
     }
   }
 }
@@ -28,6 +31,15 @@ void debugPrintTable() {
   }
 }
 
+void debug_cSum() {
+  cout << "debug cSum " << endl;
+  for(int r=0;r<2*N-1;++r) {
+    for(int c=0;c<2*N-1;++c) {
+      cout << cSum[r][c] << ' ';
+    }
+    cout << endl;
+  }
+}
 // void debugMemoTable() {
 //   for(int k=1;k<=N;++k) {
 //     cout << "\nK = " << k << endl;
@@ -70,6 +82,7 @@ int main(void) {
   while(N != 0) {
     input();
     // debugPrintTable();
+    debugcSum();
     process();
     // debugMemoTable();
     output();
