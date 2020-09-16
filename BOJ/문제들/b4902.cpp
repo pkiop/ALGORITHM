@@ -1,6 +1,6 @@
 #include <iostream>
 #include <algorithm>
-#include <map>
+#include <cstring>
 
 using namespace std;
 
@@ -10,66 +10,57 @@ int cSum[401][801];
 int ans;
 void input() {
   ans = -1001;
+  memset(cSum, 0, sizeof(cSum));
+  memset(table, 0, sizeof(table));
   for(int r=0;r<N;++r) {
-    cSum[r][0] = 0;
-    for(int c=0;c<2*(r+1)-1;++c) {
+    for(int c=0;c<2*r+1;++c) {
       cin >> table[r][c];
       ans = max(table[r][c], ans);
-      if(c != 0)
-        cSum[r][c] += cSum[r][c-1];
+      if(c != 0) 
+        cSum[r][c] += cSum[r][c-1] + table[r][c];
+      else
+        cSum[r][c] = table[r][c];
     }
   }
 }
 
-void debugPrintTable() {
-  cout << "debug print table" << endl;
-  for(int r=0;r<2*N-1;++r) {
-    for(int c=0;c<2*N-1;++c) {
-      cout << table[r][c] << ' ';
-    }
-    cout << endl;
+void cal(int r, int c) {
+  int pSum = 0;
+  for(int s=1;s<=N-r+1;++s) {
+    if(c == 0) 
+      pSum += cSum[r + s - 1][c + 2 * (s - 1)];
+    else 
+      pSum += cSum[r + s - 1][c + 2 * (s - 1)] - cSum[r + s - 1][c - 1];
+    ans = max(pSum, ans);
   }
 }
 
-void debug_cSum() {
-  cout << "debug cSum " << endl;
-  for(int r=0;r<2*N-1;++r) {
-    for(int c=0;c<2*N-1;++c) {
-      cout << cSum[r][c] << ' ';
+void reverseCal(int r, int c) {
+ int pSum = 0;
+  for(int s=1;s<=N;++s) {
+    if(c >= 2 * s - 1 && 2 * r - c >= s * 2 - 1) {
+      if(c - 2 * s + 1 >= 0) {
+        pSum += cSum[r - s + 1][c] - cSum[r - s + 1][c - 2 * s + 1];
+      } else {
+        pSum += cSum[r - s + 1][c];
+      }
+    } else {
+      break;
     }
-    cout << endl;
+    ans = max(pSum, ans);
   }
-}
-// void debugMemoTable() {
-//   for(int k=1;k<=N;++k) {
-//     cout << "\nK = " << k << endl;
-//     for(int r=0;r<=N;++r) {
-//       for(int c=0;c<2*(r+1)-1;++c) {
-//         cout << memo[r][c][k] << ' ';
-//       }
-//       cout << endl;
-//     }
-//   }
-// }
-
-void cal(int r, int c, int k) {
-  if(k == 2) {
-    memo[r][c][k] = memo[r][c][1] + memo[r+1][c][k-1] + memo[r+1][c+2][k-1] + memo[r+1][c+1][1];
-  } else {
-    memo[r][c][k] = memo[r][c][1] + memo[r+1][c][k-1] + memo[r+1][c+2][k-1] + memo[r+1][c+1][1] - memo[r+2][c+2][k-2];
-  }
-  ans = max(memo[r][c][k], ans);
 }
 
 void process() {
   for(int r=N-1;r>=0;--r) {
-    for(int c=0;c<2*(r+1)-1;c+=2) {
-      for(int k = 2; k <= N - r; ++k) { // size
-        cal(r,c,k);
+    for(int c=0;c<2*r+1;c+=2) {
+      cal(r,c);
+      if(c != 2 * r) {
+        reverseCal(r,c+1);
       }
     }
-  }
-}
+  } 
+ }
 
 void output() {
   static int cnt = 1;
@@ -77,14 +68,11 @@ void output() {
 }
 
 int main(void) {
-  // freopen("b4902.txt", "r", stdin);
+  freopen("b4902.txt", "r", stdin);
   cin >> N;
   while(N != 0) {
     input();
-    // debugPrintTable();
-    debugcSum();
     process();
-    // debugMemoTable();
     output();
     cin >> N;
   }
