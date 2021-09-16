@@ -1,6 +1,6 @@
 let fs = require('fs');
-// let input = fs.readFileSync('/dev/stdin').toString().split('\n');
-let input = fs.readFileSync('./b9184.txt').toString().split('\n');
+let input = fs.readFileSync('/dev/stdin').toString().split('\n');
+// let input = fs.readFileSync('./b9184.txt').toString().split('\n');
 
 let readlineIdx = 0;
 
