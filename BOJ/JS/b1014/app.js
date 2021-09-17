@@ -1,13 +1,18 @@
 const fs = require('fs');
 const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
 let input = fs.readFileSync(filePath).toString().split('\n');
+input = input.filter((el) => el);
+console.log('input : ', input);
 const C = +input[0];
 const inputs = [];
 let nowI = 1;
 
 let cnt = 0;
 let maxCnt = 0;
-let visited = Array(10).fill(Array(10).fill(-1));
+let visited = [];
+for (let i = 0; i < 10; ++i) {
+  visited.push(Array(10).fill([...Array(10).fill(-1)]));
+}
 for (let i = 1; i <= C; ++i) {
   const [N, M] = input[nowI].split(' ').map((el) => +el);
   const table = [];
@@ -49,9 +54,13 @@ function isOkToPut(N, M, x, y, table) {
   if (x + 1 < M && y - 1 >= 0 && !isPIT(x + 1, y - 1, ['p'])) {
     return false;
   }
-  if (y - 1 >= 0 && !isPIT(x, y - 1, [])) {
+  if (x - 1 >= 0 && y + 1 < N && !isPIT(x - 1, y + 1, ['p'])) {
     return false;
   }
+  if (x + 1 < M && y + 1 < N && !isPIT(x + 1, y + 1, ['p'])) {
+    return false;
+  }
+
   return true;
 }
 
@@ -59,12 +68,15 @@ function dfs(N, M, x, y, table) {
   for (let i = 0; i < N; ++i) {
     for (let j = 0; j < M; ++j) {
       // printTable(table, N, M);
+      if (table[i][j] !== '.') {
+        continue;
+      }
       if (isOkToPut(N, M, j, i, table)) {
-        if (visited[j][i] > cnt) {
+        if (visited[i][j] > cnt) {
           continue;
         }
         cnt++;
-        visited[j][i] = cnt;
+        visited[i][j] = cnt;
         maxCnt = Math.max(cnt, maxCnt);
         table[i][j] = 'p';
         dfs(N, M, j, i, table);
@@ -77,8 +89,13 @@ function dfs(N, M, x, y, table) {
 
 function printTable(table, N, M) {
   for (let i = 0; i < N; ++i) {
-    console.log(table[i]);
+    let printS = '';
+    for (let j = 0; j < M; ++j) {
+      printS += table[i][j] + ' ';
+    }
+    console.log(printS);
   }
+  console.log();
 }
 
 function solution(C, inputs) {
