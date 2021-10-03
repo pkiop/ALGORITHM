@@ -2,24 +2,48 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
   int tc;
   cin >> tc;
-  for(int i=0;i<tc;++i) {
-    int n; 
-    cin >> n;
-    long long ans = 1;
-    if(n == 1) {
-      cout << 1 << endl;
-      continue;
+  for (int i = 0; i < tc; ++i)
+  {
+    long long n, m, k;
+    cin >> n >> m >> k;
+
+    if (m < n - 1 || m > (n * (n - 1) / 2))
+    {
+      cout << "NO" << endl;
     }
-    if(n == 2) {
-      cout << 12 << endl;
-      continue;
+    else if (n == 1)
+    {
+      if (k > 1)
+      {
+        cout << "YES" << endl;
+      }
+      else
+      {
+        cout << "NO" << endl;
+      }
     }
-    for(long long j=2*n; j>=3; --j) {
-      ans = (j * (ans % 1000000007)) % 1000000007;
+    else if (m < (n * (n - 1) / 2))
+    {
+      if (k > 3)
+      {
+        cout << "YES" << endl;
+      }
+      else
+      {
+        cout << "NO" << endl;
+      }
     }
-    cout << ans << endl;
+    else if (k > 2)
+    {
+      cout << "YES" << endl;
+    }
+    else
+    {
+      cout << "NO" << endl;
+    }
   }
 }
